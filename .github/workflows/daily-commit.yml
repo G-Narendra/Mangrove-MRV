@@ -2,8 +2,11 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: "30 6 * * *"   # Runs daily at 6:30 UTC
+    - cron: "30 6 * * *"  # Daily at 6:30 UTC
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-log:
@@ -26,5 +29,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Daily progress update" || echo "No changes"
+          git diff --cached --quiet || git commit -m "Daily progress update"
           git push
