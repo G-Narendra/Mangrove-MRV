@@ -1,0 +1,30 @@
+name: Daily Commit
+
+on:
+  schedule:
+    - cron: "30 6 * * *"   # Runs daily at 6:30 UTC
+  workflow_dispatch:
+
+jobs:
+  update-log:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Run update script
+        run: python scripts/update_log.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Daily progress update" || echo "No changes"
+          git push
