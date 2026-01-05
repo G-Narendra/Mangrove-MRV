@@ -7,3 +7,6 @@
 ## 2026-01-04
 - Learned something new about APIs
 
+## 2026-01-05
+- Learned something new about APIs
+
