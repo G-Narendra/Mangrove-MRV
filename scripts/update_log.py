@@ -1,27 +1,25 @@
 from datetime import datetime
 import random
-import time
 
 ideas = [
-    "Reviewed system design concepts",
-    "Worked on algorithm optimization",
-    "Improved project documentation",
-    "Refactored utility functions",
-    "Explored model evaluation techniques",
-    "Reviewed research papers",
-    "Improved code readability",
-    "Experimented with small code changes",
-    "Updated notes on AI concepts",
-    "Checked open-source repositories"
+    "Reviewed system architecture notes",
+    "Improved algorithm understanding",
+    "Refined project documentation",
+    "Studied optimization techniques",
+    "Reviewed ML evaluation metrics",
+    "Read research papers",
+    "Improved code structure",
+    "Explored new tooling",
+    "Updated learning notes",
+    "Reviewed open-source implementations"
 ]
 
-today = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-for i in range(12):  # 🔥 12 commits per day
-    entry = f"## {today}\n- {random.choice(ideas)} (update {i+1})\n\n"
+entry = f"""## {timestamp}
+- {random.choice(ideas)}
 
-    with open("logs/daily-log.md", "a", encoding="utf-8") as f:
-        f.write(entry)
+"""
 
-    # Small delay so commits look natural
-    time.sleep(20)
+with open("logs/daily-log.md", "a", encoding="utf-8") as f:
+    f.write(entry)
