@@ -2,32 +2,42 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: "30 6 * * *"  # Daily at 6:30 UTC
+    - cron: "0 6 * * *"   # Starts at 06:00 UTC (~11:30 IST)
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  update-log:
+  spread-commits:
     runs-on: ubuntu-latest
+    timeout-minutes: 360   # 6 hours max
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Run update script
-        run: python scripts/update_log.py
-
-      - name: Commit changes
+      - name: Configure Git
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add .
-          git diff --cached --quiet || git commit -m "Daily progress update"
-          git push
+          git config user.name "G-Narendra"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Commit with random delays
+        run: |
+          DELAYS=(1200 1800 2100 1500 2760 3120 1680 2400 1980 2220)
+          COUNT=${#DELAYS[@]}
+
+          for ((i=0; i<COUNT; i++)); do
+            echo "Commit $((i+1))"
+            python scripts/update_log.py
+            git add logs/daily-log.md
+            git commit -m "Daily progress update $((i+1))"
+            git push
+            echo "Sleeping for ${DELAYS[$i]} seconds..."
+            sleep ${DELAYS[$i]}
+          done
