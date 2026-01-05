@@ -34,3 +34,6 @@
 ## 2026-01-05 22:05:15
 - Reviewed ML evaluation metrics
 
+## 2026-01-05 22:45:15
+- Read research papers
+
