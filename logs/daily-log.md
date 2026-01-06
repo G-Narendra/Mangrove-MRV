@@ -64,3 +64,6 @@
 ## 2026-01-06 10:23:59
 - Updated learning notes
 
+## 2026-01-06 11:04:00
+- Read research papers
+
