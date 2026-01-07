@@ -97,3 +97,6 @@
 ## 2026-01-07 11:03:34
 - Studied optimization techniques
 
+## 2026-01-07 11:36:34
+- Reviewed ML evaluation metrics
+
