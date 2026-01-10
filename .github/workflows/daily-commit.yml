@@ -25,14 +25,12 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Configure Git
+      - name: Configure Git (CRITICAL)
         run: |
           git config user.name "G-Narendra"
           git config user.email "narendragandikota2540@gmail.com"
 
       - name: Commit with random delays
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DELAYS=(1200 1800 2100 1500 2760 3120 1680 2400 1980 2220)
           shuf -e "${DELAYS[@]}" -o DELAYS
@@ -42,7 +40,7 @@ jobs:
             python scripts/update_log.py
             git add logs/daily-log.md
             git commit -m "Daily progress update $((i+1))" || echo "No changes"
-            git push https://x-access-token:${GITHUB_TOKEN}@github.com/G-Narendra/daily-progress.git
+            git push origin main
             echo "Sleeping for ${DELAYS[$i]} seconds..."
             sleep ${DELAYS[$i]}
           done
