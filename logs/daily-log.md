@@ -199,3 +199,6 @@
 ## 2026-01-10 12:46:09
 - Explored new tooling
 
+## 2026-01-10 13:21:10
+- Reviewed ML evaluation metrics
+
