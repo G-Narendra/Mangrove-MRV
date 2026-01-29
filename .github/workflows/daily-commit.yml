@@ -2,45 +2,49 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: "0 6 * * *"   # 06:00 UTC (~11:30 IST)
+    # Run at 06:00, 10:00, 14:00, and 18:00 UTC
+    - cron: "0 6,10,14,18 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  spread-commits:
+  single-commit:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 15 # Safety cutoff
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Ensure main branch
-        run: git checkout main
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Configure Git (CRITICAL)
+      - name: Configure Git
         run: |
           git config user.name "G-Narendra"
           git config user.email "narendragandikota2540@gmail.com"
 
-      - name: Commit with random delays
+      - name: Random Short Delay (Jitter)
         run: |
-          DELAYS=(1200 1800 2100 1500 2760 3120 1680 2400 1980 2220)
-          shuf -e "${DELAYS[@]}" -o DELAYS
+          # Sleep between 1 to 600 seconds (max 10 mins)
+          # This makes the commit time look natural without burning hours
+          SLEEP_TIME=$((1 + RANDOM % 600))
+          echo "Sleeping for $SLEEP_TIME seconds..."
+          sleep $SLEEP_TIME
 
-          for i in "${!DELAYS[@]}"; do
-            echo "Commit $((i+1))"
-            python scripts/update_log.py
-            git add logs/daily-log.md
-            git commit -m "Daily progress update $((i+1))" || echo "No changes"
+      - name: Create Commit
+        run: |
+          python scripts/update_log.py
+          git add logs/daily-log.md
+          
+          # Check if there are changes before committing
+          if [[ -n $(git status -s) ]]; then
+            git commit -m "Daily progress update $(date +'%Y-%m-%d %H:%M')"
             git push origin main
-            echo "Sleeping for ${DELAYS[$i]} seconds..."
-            sleep ${DELAYS[$i]}
-          done
+          else
+            echo "No changes to commit"
+          fi
