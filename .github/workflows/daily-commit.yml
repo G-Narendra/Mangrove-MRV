@@ -1,21 +1,21 @@
-name: Daily Commit
+name: Human Like Daily Activity
 
 on:
   schedule:
-    # Run at 06:00, 10:00, 14:00, and 18:00 UTC
-    - cron: "0 6,10,14,18 * * *"
+    # Runs every hour
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  single-commit:
+  activity:
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # Safety cutoff
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -28,23 +28,17 @@ jobs:
           git config user.name "G-Narendra"
           git config user.email "narendragandikota2540@gmail.com"
 
-      - name: Random Short Delay (Jitter)
-        run: |
-          # Sleep between 1 to 600 seconds (max 10 mins)
-          # This makes the commit time look natural without burning hours
-          SLEEP_TIME=$((1 + RANDOM % 600))
-          echo "Sleeping for $SLEEP_TIME seconds..."
-          sleep $SLEEP_TIME
-
-      - name: Create Commit
+      - name: Human-like activity logic
         run: |
           python scripts/update_log.py
-          git add logs/daily-log.md
-          
-          # Check if there are changes before committing
+
+      - name: Commit and Push
+        run: |
+          git add logs/daily-log.md logs/activity-state.json
+
           if [[ -n $(git status -s) ]]; then
-            git commit -m "Daily progress update $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "$(python scripts/commit_message.py)"
             git push origin main
           else
-            echo "No changes to commit"
+            echo "No activity generated this run"
           fi
