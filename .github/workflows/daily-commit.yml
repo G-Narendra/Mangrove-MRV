@@ -1,5 +1,8 @@
 name: Human Like Daily Activity
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     # Runs every hour
