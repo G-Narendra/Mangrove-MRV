@@ -1924,3 +1924,6 @@
 ## 2026-05-13 21:16:54
 - Updated learning notes
 
+## 2026-05-14 02:10:20
+- Reviewed ML evaluation metrics
+
