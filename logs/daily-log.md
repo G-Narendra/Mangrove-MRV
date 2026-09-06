@@ -2794,3 +2794,6 @@
 ## 2026-09-05 11:01:47
 - Reviewed ML evaluation metrics
 
+## 2026-09-06 14:35:46
+- Reviewed open-source implementations
+
