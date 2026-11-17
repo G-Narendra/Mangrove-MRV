@@ -3160,3 +3160,6 @@
 ## 2026-11-16 22:37:59
 - Reviewed open-source implementations
 
+## 2026-11-17 22:00:15
+- Reviewed ML evaluation metrics
+
